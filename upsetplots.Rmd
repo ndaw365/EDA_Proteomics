@@ -113,39 +113,5 @@ print(lowest_10)
 
 ```
 
-```{r}
-# Select prostate and bone cell lines
-selected_tissues <- c("PROSTATE")
-selected_cell_lines <- unlist(tissue_groups[names(tissue_groups) %in% selected_tissues])
-cat("🧬 Selected cell lines:\n")
-print(selected_cell_lines)
-
-# Define cutoff percentages (keep top x%)
-cutoffs <- c(0.95, 0.90)
-
-# Create output directory
-dir.create("prostate_histogram", showWarnings = FALSE)
-
-# Plot histograms with cutoff lines for each selected cell line
-for (cell in selected_cell_lines) {
-  values <- data_expr[[cell]]
-  df <- data.frame(Expression = values)
-
-  p <- ggplot(df, aes(x = Expression)) +
-    geom_histogram(bins = 50, fill = "gray85", color = "black") +
-    ggtitle(paste("Expression -", cell)) +
-    theme_minimal()
-
-  for (c in cutoffs) {
-    cutoff_val <- quantile(values, probs = 1 - c, na.rm = TRUE)
-    p <- p + geom_vline(xintercept = cutoff_val, color = "red", linetype = "dashed", alpha = 0.5) +
-      annotate("text", x = cutoff_val, y = Inf, label = paste0("Top ", c * 100, "%"),
-               vjust = 2, hjust = 1, size = 3)
-  }
-
-  ggsave(filename = paste0("prostate_histogram/", cell, "_cutoffs.png"),
-         plot = p, width = 6, height = 4)
-}
-```
 
 
