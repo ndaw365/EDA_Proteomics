@@ -16,11 +16,13 @@ This data contains:
 ## Code: 
 
 upsetplots.Rmd: holds code that generates the upset plots. 
+  Summary of code: 
+  Data is cleaned to only work with cell line columns. This includes only working with columns that hold expression values and extracting column names that represent different types of tissue. Then, a binary expression matrix is formed to determine if value is above cutoff (1) or below cutoff (0). Cutoffs keep top 95% and top 90% of protein intensities. The specific tissue UpSet plots selects the relevant cell lines which filter to proteins that hold some expression. UpSetR is used to express how proteins are shared across cell lines. 
 
 histograms.Rmd: holds code that generates the histogram plots. 
-
-
-
+  Summary of code: 
+  Data is cleaned. Each tissue type is looped through cell lines and a histogram is generated that holds the intensity values. Cutoff thresholds are identified as the vertical dashed lines where the red lines mark each cutoff. 
+  
 
 ## Outputs:
 
