@@ -1,0 +1,80 @@
+---
+title: "Backus Lab: Histograms"
+output: html_document
+date: "2025-04-24"
+---
+
+```{r}
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(stringr)
+
+# Load the data
+data <- read_csv("~/Downloads/protein_quant_current_normalized.csv")
+data_expr <- data[, 49:425]
+colnames(data_expr) <- make.names(colnames(data_expr))
+
+# Extract tissue names from column names
+extract_tissue <- function(colname) {
+  parts <- unlist(strsplit(colname, "_"))
+  if (length(parts) >= 3) paste(parts[2:(length(parts) - 1)], collapse = "_") else NA
+}
+tissue_info <- sapply(colnames(data_expr), extract_tissue)
+tissue_groups <- split(colnames(data_expr), tissue_info)
+
+
+# Define cutoffs
+cutoffs <- c(0.95, 0.90, 0.75, 0.5)
+
+# Create top-level output folder
+top_dir <- "cell_line_histograms_all"
+dir.create(top_dir, showWarnings = FALSE)
+
+# Generate histograms for each individual cell line, grouped into tissue folders
+for (tissue in names(tissue_groups)) {
+  cell_lines <- tissue_groups[[tissue]]
+
+  # Create subfolder per tissue
+  tissue_dir <- file.path(top_dir, gsub("[^A-Za-z0-9]", "_", tissue))
+  dir.create(tissue_dir, showWarnings = FALSE)
+
+  for (cell in cell_lines) {
+    values <- data_expr[[cell]]
+    df <- data.frame(Expression = values)
+
+    p <- ggplot(df, aes(x = Expression)) +
+      geom_histogram(bins = 50, fill = "white", color = "black") +
+      ggtitle(paste("Expression Histogram -", cell)) +
+      theme_classic(base_size = 14)
+
+    # Add staggered cutoff lines and labels
+    y_offset <- 0.85
+    for (i in seq_along(cutoffs)) {
+      c <- cutoffs[i]
+      cutoff_val <- quantile(values, probs = 1 - c, na.rm = TRUE)
+      p <- p + geom_vline(xintercept = cutoff_val, color = "red", linetype = "dashed", alpha = 0.5) +
+        annotate("text",
+                 x = cutoff_val,
+                 y = Inf,
+                 label = paste0("Top ", c * 100, "%"),
+                 vjust = y_offset,
+                 hjust = 1,
+                 size = 3.5,
+                 angle = 90)
+      y_offset <- y_offset - 0.15
+    }
+
+    # Sanitize filename
+    safe_cell <- gsub("[^A-Za-z0-9]", "_", cell)
+    output_path <- file.path(tissue_dir, paste0(safe_cell, "_histogram.png"))
+
+    # Save plot
+    ggsave(filename = output_path, plot = p, width = 7, height = 5)
+  }
+}
+
+
+```
+
