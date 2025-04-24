@@ -1,4 +1,4 @@
-# DepMap Exploratory Data Analysis (EDA) on Proteomics
+# Exploratory Data Analysis (EDA) on Proteomics
 
 This repository aims to conduct EDA on normalized protein data. With conducting EDA, the purpose of this project aims to visualize the distributions of intensity across all cells lines, setting cutoffs to see how many proteins are gained and lost in order to compare similarities of protein expression across cell lines. 
 
