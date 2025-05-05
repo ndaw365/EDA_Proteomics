@@ -27,14 +27,17 @@ This data contains:
 ## Outputs:
 
 ### upset_plots:
-- Generated upset plots to compare cell lines within the same tissue to see similarities in expression.
-- upset plots are split into cutoffs of 90% and 95%. 
+- Code generates "upset_plots" folder
+- compares cell lines within the same tissue to see similarities in expression.
+- upset plots are split into cutoffs of 90% and 95%.
+- upset plots are in .png format 
 
   (output has been manually compressed into .zip to be uploaded in git repository successfully)
 
 
 ### cell_line_histograms_all:
 - folder that contains histograms of all cell lines.
+- subfolders are different tissue types with histograms in .png format 
 - These cell lines are identified by tissue and split accordingly in subfolders.
 - These histograms contain 95%, 90%, 75%, and 50% cutoffs of to reveal the distribution of intensity across all cell lines. This is done to identify a number of protein abundances which are meaningful to keep per cell line. This allows visualization of which proteins were kept/removed based on cutoffs. 
 - These histograms are also labeled to express values that fall above the cutoff.
