@@ -2,16 +2,33 @@
 
 This repository aims to conduct EDA on normalized protein data. With conducting EDA, the purpose of this project aims to visualize the distributions of intensity across all cells lines, setting cutoffs to see how many proteins are gained and lost in order to compare similarities of protein expression across cell lines. 
 
+## R Dependencies
+```r
+# Required R packages
+library(UpSetR)      # For UpSet plot generation
+library(ggplot2)     # For histogram plotting
+library(dplyr)       # For data manipulation
+library(readr)       # For CSV reading
+library(stringr)     # For string processing
+```
+
+## Installation 
+Install the required packages using:
+install.packages(c("UpSetR", "ggplot2", "dplyr", "readr", "stringr"))
+
 ## Input:
 **protein_quant_current_normalized.csv**: file downloaded from [Gygi lab](https://gygi.hms.harvard.edu/publications/ccle.html) under Normalized and Other Data. 
 In this section, data was downloaded from 2. Protein Quantification. 
 
 <img width="900" alt="Screenshot 2025-04-24 at 11 52 22 AM" src="https://github.com/user-attachments/assets/abb34bff-fb80-47e6-a013-045a2ad9026c" />
 
-This data contains:
-- proteins as rows
-- cell lines as columns
-- normalized intensities as input values
+## Data Format 
+The scripts expect a CSV file with the following structure:
+
+Columns 1-48: Metadata columns (protein identifiers, annotations, etc.)
+Columns 49-425: Expression data columns (normalized intensities as input values)
+Column naming convention: prefix_TISSUE_suffix format where TISSUE is extracted as the tissue type
+Rows represent proteins and cell lines represent columns. 
 
 ## Code: 
 
